@@ -10,6 +10,7 @@
     "clean": "rm -rf dist",
     "build": "npm run clean && tsc",
     "postbuild": "rm -rf dist/logs",
+    "prepare": "tsc",
     "prepublishOnly": "npm run build",
     "dev": "opencode plugin dev",
     "typecheck": "tsc --noEmit"
