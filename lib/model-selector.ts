@@ -70,13 +70,17 @@ export async function selectModel(
     let failedModelInfo: ModelInfo | undefined;
 
     if (configModel) {
+        // Model IDs may contain "/" themselves (e.g. "openrouter/google/gemini-2.5-flash"),
+        // so only the first segment is the provider ID and the rest is the model ID.
         const parts = configModel.split('/')
-        if (parts.length !== 2) {
+        const providerID = parts[0]
+        const modelID = parts.slice(1).join('/')
+
+        if (parts.length < 2 || !providerID || !modelID) {
             logger?.warn('model-selector', '✗ Invalid config model format, expected "provider/model"', {
                 configModel
             });
         } else {
-            const [providerID, modelID] = parts
             logger?.debug('model-selector', 'Attempting to use config-specified model', {
                 providerID,
                 modelID
